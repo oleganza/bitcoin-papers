@@ -6,8 +6,7 @@ Personal ideas and inventions for Bitcoin.
 Papers
 ------
 
-[ECDSA-compatible Blind Signature Scheme for Distributed Custodianship](BlindSignatures.md). Distribute control over bitcoins between multiple custodians while maintaining absolute privacy. Custodians only authenticate you in person and allow or deny a transaction, but never know the contents of the transaction.
-
+[Bitcoin Blind Signatures](BitcoinBlindSignatures.md). Distribute control over bitcoins between multiple custodians while maintaining absolute privacy. Custodians only authenticate you in person and allow or deny a transaction, but never know the contents of the transaction.
 
 
 
