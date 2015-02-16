@@ -1,5 +1,5 @@
-Blind Signatures
-================
+Bitcoin Blind Signatures
+========================
 
 Author: Oleg Andreev <oleganza@gmail.com>
 
