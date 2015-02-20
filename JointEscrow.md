@@ -17,14 +17,14 @@ Example 1
 
 Alice from Australia wants to sell her old rusty iPod for $100. Bob from Brazil finds her listing and wants to purchase the iPod. Someone must act first: either Alice sends the iPod, or Bob sends the payment. Neither party trusts each other and it's too expensive or impossible to employ a trusted 3rd party to observe the process.
 
-They can solve the problem by using Join Escrow: each of them locks up $200 in a single 2-of-2 multisig output where signatures from both Alice and Bob are required to unlock total $400. 
+They can solve the problem by using Joint Escrow: each of them locks up $200 in a single 2-of-2 multisig output where signatures from both Alice and Bob are required to unlock total $400. 
 
 Lets say Alice sends first. When Bob receives the iPod, he gets what he asked for worth $100, but he has $200 still locked up. He composes and half-signs a transaction that unlocks $400 in a way that $300 goes back to Alice and $100 goes back to Bob. If Alice agrees with that proportion, she signs and publishes that transaction. Proportion could be different if both Alice and Bob agree on a partial or complete refund.
 
 Example 2
 ---------
 
-Alice is a designer who agreed to create a 10-page website for Bob. The total amount of order is $10000. To avoid locking up $20000 from each side, parties may break down the contract in 10 steps (one per website's page) and only lock up $2000 from each side. After completion of each step they exchange the product and the payment of $1000. Then they decide to move to next step or terminate the contract early. This way, the Join Escrow becomes a kind of a "trust channel" that can be reused indefinitely as long as both parties are satisfied.
+Alice is a designer who agreed to create a 10-page website for Bob. The total amount of order is $10000. To avoid locking up $20000 from each side, parties may break down the contract in 10 steps (one per website's page) and only lock up $2000 from each side. After completion of each step they exchange the product and the payment of $1000. Then they decide to move to next step or terminate the contract early. This way, the Joint Escrow becomes a kind of a "trust channel" that can be reused indefinitely as long as both parties are satisfied.
 
 
 Illustration
@@ -77,7 +77,7 @@ Features
 --------
 
 * Unlock process may include payment for a good or service in a single transaction.
-* Join Escrow enables markets that otherwise are impossible: either when transacting parties cannot have prior reputation (e.g. one-time Ebay sellers/buyers), or trusted 3rd party would be too expensive or impossible to use (e.g. both parties trade inexpensive goods across the globe).
+* Joint Escrow enables markets that otherwise are impossible: either when transacting parties cannot have prior reputation (e.g. one-time Ebay sellers/buyers), or trusted 3rd party would be too expensive or impossible to use (e.g. both parties trade inexpensive goods across the globe).
 * Absolute privacy is enabled since transacting parties do not need to rely on reputations or any other persistent identification.
 * Bots can transact on the internet autonomously. They essentially "buy trust" from each other and then provide necessary services. This makes Joint Escrow an important building block in the next generation of distributed markets and networks.
 

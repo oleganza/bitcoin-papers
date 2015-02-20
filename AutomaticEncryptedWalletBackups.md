@@ -41,15 +41,15 @@ Definitions
 
 `||` denote concatenation of two binary strings.
 
-**Plaintext** is a serialized represenation of Wallet's metadata. This could be JSON, XML, SQLite or any other data. This specification does not cover the underlying data format and leaves it to each wallet application to define for itself.
+**Plaintext** is a serialized represenation of Wallet's metadata. This could be JSON, XML, SQLite or any other data. This specification does not cover the underlying data format. Each wallet application defines that format for itself.
 
-**Master Key** is 32-byte raw private key contained in the wallet's master extended private key (per BIP32).
+**Master Key** is a 32-byte raw private key contained in the wallet's master extended private key (per BIP32).
 
-**Backup Key** is a key derived from the *Master Key* from which all other backup-related keys are derived. Wallet should store that key in a secure location that does not require user interaction to be accessed. (Unlike *Master Key* that should be stored in a location that does require interactiev authentication like passcode or Touch ID.) All the keys defined below are derived on the fly from the single *Backup Key*. 
+**Backup Key** is a key derived from the *Master Key* from which all other backup-related keys are derived. Wallet should store that key in a secure location that does not require user interaction to be accessed. (Unlike *Master Key* that should be stored in a location that does require interactive authentication like passcode or Touch ID.) All the keys defined below are derived on the fly from the single *Backup Key*. 
 
     BackupKey = HMAC-SHA256(key: MasterKey, data: "Automatic Backup Key")
 
-**Wallet Identifier** is a 16-byte string used to identify a wallet backup when storing and retrieving it. It is not included in the backup itself and only used to reference the backup in a standard way.
+**Wallet Identifier** is a 16-byte string used to identify a wallet backup when storing and retrieving it. It is not included in the backup itself and only used to reference the backup in a standard way when communicating with a storage service.
 
     WalletID = HMAC-SHA256(key: BackupKey, data: "Wallet ID")[0, 16]
 
