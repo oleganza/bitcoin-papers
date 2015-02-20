@@ -1,7 +1,7 @@
 Bitcoin Research and Development
 ================================
 
-The following inventions are result of solving real problems in real applications. Most of them are fully invented by Oleg Andreev, but some improve upon existing ideas. Papers will be updated when better ideas come along. Your feedback is always welcome.
+The following inventions are result of solving real problems in real applications. Most of them are fully invented by Oleg Andreev, some improve the existing ideas. Papers will be updated when better ideas come along. Your feedback is always welcome.
 
 [Bitcoin Blind Signatures](BitcoinBlindSignatures.md). Distribute control over bitcoins between multiple custodians while maintaining absolute privacy. Custodians only authenticate you in person and allow or deny a transaction, but never know the contents of the transaction.
 
