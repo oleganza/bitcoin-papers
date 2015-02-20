@@ -3,12 +3,14 @@ Joint Escrow
 
 Oleg Andreev <oleganza@gmail.com>
 
-
-
 Introduction
 ------------
 
-Typically trust is required when two parties enter a contract. This could be trust in each other's performance, or trust in 3rd party that acts as an insurer or arbiter. We propose a Bitcoin scheme that allows to establish trust between any two parties (humans or autonomous programs) on a purely game-theoretic basis. Before executing a contract valued at X amount of money, both parties simultaneously lock up 2*X amounts in a single 2-of-2 multi-signature output. They can only unlock those funds if they both agree on conditions. This puts them in the Nash equilibrium: neither of them is interested in cheating since the value to gain is noticebly lower than the value to lose. Therefore they both find a way to complete or cancel contract to mutual satisfaction in order to get back their locked funds. The scheme removes the need for reputation or trusted 3rd parties and enables fully private and autonomous operation for humans and machines.
+Typically trust is required when two parties enter a contract. This could be trust in each other's performance, or trust in 3rd party that acts as an insurer or arbiter. We propose a Bitcoin scheme that allows to establish trust between any two parties (humans or autonomous programs) on a purely game-theoretic basis. 
+
+Before executing a contract valued at X amount of money, both parties simultaneously lock up 2*X amounts in a single 2-of-2 multi-signature output. They can only unlock those funds if they both agree on conditions. This puts them in the Nash equilibrium: neither of them is interested in cheating since the value to gain is noticebly lower than the value to lose. Therefore they both find a way to complete or cancel contract to mutual satisfaction in order to get back their locked funds. 
+
+The scheme removes the need for reputation or trusted 3rd parties and enables fully private and autonomous operation for humans and machines.
 
 Example 1 
 ---------
