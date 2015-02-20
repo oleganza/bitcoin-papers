@@ -70,7 +70,7 @@ Escrow factor could be specified depending on application. E.g. first sender (me
 Withholding Unlocked Funds
 --------------------------
 
-It is possible that once Bob half-signs transaction that unlocks funds, Alice keeps her copy of that transaction indefinitely, as a part of her "pension fund". She technically can spend her portion of funds any time, but Bob must wait for her to do so to access his funds. To prevent this attack, after locking up their funds, but before executing the contract, both parties may sign a time-locked transaction that spends both their funds to an unspendable address (e.g. all-zero). This way, if Alice tries to withhold a half-signed transaction, she risks having all funds permanently destroyed by Bob after a certain point in time. So she has additional incentive to play nice and finalize the transaction as soon as possible.
+It is possible that once Bob half-signs transaction that unlocks funds, Alice keeps her copy of that transaction indefinitely, as a part of her "pension fund". She technically can spend her portion of funds any time, but Bob must wait for her to access his part of unlocked funds. To mitigate that attack, after locking up their funds, but before executing the contract, both parties may sign and exchange a time-locked transaction that spends both their funds to an unspendable address (e.g. all-zero). This way, if Alice tries to withhold a half-signed transaction, she risks having all funds permanently destroyed by Bob after a certain point in time. So she has additional incentive to play nice and finalize the transaction as soon as possible.
 
 
 Features
