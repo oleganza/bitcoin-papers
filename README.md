@@ -3,11 +3,12 @@ Bitcoin Research and Development
 
 The following inventions are result of solving real problems in real applications. Most of them are fully invented by Oleg Andreev, some improve the existing ideas. Papers will be updated when better ideas come along. Your feedback is always welcome.
 
-[Bitcoin Blind Signatures](BitcoinBlindSignatures.md). Distribute control over bitcoins between multiple custodians while maintaining absolute privacy. Custodians only authenticate you in person and allow or deny a transaction, but never know the contents of the transaction.
+**[Bitcoin Blind Signatures](BitcoinBlindSignatures.md)**. Distribute control over bitcoins between multiple custodians while maintaining absolute privacy. Custodians only authenticate you in person and allow or deny a transaction, but never know the contents of the transaction.
 
-[Automatic Encrypted Wallet Backups](AutomaticEncryptedWalletBackups.md) (BIP proposal). Bitcoin wallets normally require careful backup for only its master seed. The scheme allows to encrypt all external information (payment receipts, notes etc.) using that master seed and automatically upload to one or more hosting services (iCloud, Dropbox, Google Drive) to be automatically downloaded and installed during restore process.
+**[Automatic Encrypted Wallet Backups](AutomaticEncryptedWalletBackups.md)** (BIP proposal). Bitcoin wallets normally require careful backup for only its master seed. The scheme allows to encrypt all external information (payment receipts, notes etc.) using that master seed and automatically upload to one or more hosting services (iCloud, Dropbox, Google Drive) to be automatically downloaded and installed during restore process.
 
-[Joint Escrow](JointEscrow.md). A simple multi-signature scheme for establishing game-theoretic trust between two otherwise untrusted entitites (persons or computer agents). This is a basic building block for many decentralized markets and applications such as [Bitmarkets app](http://voluntary.net/bitmarkets/).
+**[Joint Escrow](JointEscrow.md)**. A simple multi-signature scheme for establishing game-theoretic trust between two otherwise untrusted entitites (persons or computer agents). This is a basic building block for many decentralized markets and applications such as [Bitmarkets app](http://voluntary.net/bitmarkets/).
+
 
 About
 -----
