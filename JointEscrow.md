@@ -45,7 +45,7 @@ Bob's signature    | $200 |                                 |      |
 
 Bob has received a good or service from Alice. They both sign and unlock funds adjusted for the payment amount (Alice earns $100).
 
-Inputs                              |      | Output           |      |
+Input                               |      | Outputs          |      |
 ------------------------------------|------| -----------------|------| 
 Alice's signature, Bob's signature  | $400 | Alice's Address  | $300 |
                                     |      | Bob's Address    | $100 |
@@ -54,7 +54,7 @@ Alice's signature, Bob's signature  | $400 | Alice's Address  | $300 |
 
 (see below for details)
 
-Inputs                              |      | Output           |      |
+Input                               |      | Output           |      |
 ------------------------------------|------| -----------------|------| 
 Alice's signature, Bob's signature  | $400 | Null Address     | $400 |
 Lock time: 30 days in the future.   |      |                  |      |
