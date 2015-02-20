@@ -22,7 +22,7 @@ Lets say Alice sends first. When Bob receives the iPod, he gets what he asked fo
 Example 2
 ---------
 
-Alice is a designer who agreed to create a 10-page website for Bob. The total amount of order is $10000. To avoid locking up $20000 from each side, parties may break down the contract in 10 steps (one per website's page) and only lock up $2000 from each side. After completion of each step they exchange the product and the payment and decide to move onto next step or terminate the contract early. This way, the Join Escrow becomes a kind of a "trust channel" that can be reused indefinitely as long as both parties are satisfied.
+Alice is a designer who agreed to create a 10-page website for Bob. The total amount of order is $10000. To avoid locking up $20000 from each side, parties may break down the contract in 10 steps (one per website's page) and only lock up $2000 from each side. After completion of each step they exchange the product and the payment of $1000. Then they decide to move to next step or terminate the contract early. This way, the Join Escrow becomes a kind of a "trust channel" that can be reused indefinitely as long as both parties are satisfied.
 
 
 Illustration
@@ -41,7 +41,7 @@ Bob's signature    | $200 |                                 |      |
 
 ### Unlock+Payment Transaction
 
-Bob has received the good or service from Alice. They both sign and unlock funds adjusted to account for payment amount (Alice earns $100).
+Bob has received a good or service from Alice. They both sign and unlock funds adjusted for the payment amount (Alice earns $100).
 
 Inputs                              |      | Output           |      |
 ------------------------------------|------| -----------------|------| 
