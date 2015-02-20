@@ -95,6 +95,8 @@ References
 
 * [Video of my talk about Joint Escrow on February 13, 2014](http://www.bitcoinomie.fr/2014/02/18/compte-rendu-paris-bitcoin-startups-1/) ([slides](http://oleganza.com/bitcoin-epita-2014.pdf))
 
+* [Trustatom](https://trustatom.com/) provides smart-contract services including Joint Escrow implementation.
+
 * [Bitmarkets](http://voluntary.net/bitmarkets/) app, a working implementation of a private market using Joint Escrow.
 
 * [NashX market](http://nashx.com) that inspired me to design a scheme without 3rd party.

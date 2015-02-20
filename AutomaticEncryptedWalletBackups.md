@@ -37,9 +37,9 @@ Overview
 Definitions
 -----------
 
-`"Double-quoted string"` is a binary string containing ASCII-encoded text.
+`"String"` is a binary string containing ASCII-encoded text.
 
-`||` denote concatenation of two binary strings.
+`a || b` denotes concatenation of two binary strings.
 
 **Plaintext** is a serialized represenation of Wallet's metadata. This could be JSON, XML, SQLite or any other data. This specification does not cover the underlying data format. Each wallet application defines that format for itself.
 
@@ -120,7 +120,7 @@ Creating Backup
 1. User creates a wallet by generating or importing a *Master Key*.
 2. Wallet computes *Backup Key* from *Master Key* and stores it in a secure location that does not require interactive access.
 3. Whenever new information is added that must be backed up (e.g. new payment receipt), wallet serializes all the data needs to be backed up and computes *BackupPayload*.
-4. Wallet stores *BackupPayload* locally so it can periodically request *Partial Merkle Branch* (per BIP37) proofs of storage from the service that supports that. 
+4. Wallet stores *BackupPayload* locally so it can periodically request *Partial Merkle Branch* (per [BIP 37](https://github.com/bitcoin/bips/blob/master/bip-0037.mediawiki#Partial_Merkle_branch_format)) proofs of storage from the service that supports that.
 5. Wallet uploads *BackupPayload* using *Wallet Identifier* to one or more storage services. The service does not need to store the previous versions of backup for that wallet because it must return the latest one when requested.
 6. If backup contains critical data for future operation (e.g. P2SH redeem scripts or external public keys), wallet should first ensure the backup is securely uploaded before sending out any transaction that relies on that data.
 
@@ -202,7 +202,13 @@ TODO: list implementations in various languages and libraries.
 Test Vectors
 ------------
 
-TODO: generate test vectors for backups of various lengths (5 bytes, 17 bytes, 32 bytes).
+TODO: generate test vectors for backups of various lengths (5 bytes, 17 bytes, 2000 bytes, 7000 bytes).
 
 
+References
+----------
+
+* [BIP 32](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki) — hierarchical deterministic wallets.
+* [BIP 37 Partial Merkle Branch Format](https://github.com/bitcoin/bips/blob/master/bip-0037.mediawiki#Partial_Merkle_branch_format)
+* [AES-256 weakness](https://www.schneier.com/blog/archives/2009/07/another_new_aes.html) explained by Bruce Schneier.
 
