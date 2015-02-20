@@ -28,7 +28,7 @@ Alice is a designer who agreed to create a 10-page website for Bob. The total am
 Illustration
 ------------
 
-### Joint Escrow Transaction
+#### Joint Escrow Transaction
 
 Alice promises something worth $100 to Bob. Both lock up twice as much for protection.
 
@@ -39,7 +39,7 @@ Bob's signature    | $200 |                                 |      |
 
 
 
-### Unlock+Payment Transaction
+#### Unlock+Payment Transaction
 
 Bob has received a good or service from Alice. They both sign and unlock funds adjusted for the payment amount (Alice earns $100).
 
@@ -48,7 +48,7 @@ Inputs                              |      | Output           |      |
 Alice's signature, Bob's signature  | $400 | Alice's Address  | $300 |
                                     |      | Bob's Address    | $100 |
 
-### Withholding-Prevention Transaction
+#### Withholding-Prevention Transaction
 
 (see below for details)
 
