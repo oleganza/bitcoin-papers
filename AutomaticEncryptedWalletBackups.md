@@ -137,17 +137,17 @@ Restoring Backup
 Rationale
 ---------
 
-#### Why 128-bit encryption?
+**Why 128-bit encryption?**
 
 128-bit AES key is chosen since AES actually has a lousy 256-bit key scheduler which is surprisingly [weaker than the 128-bit one](https://www.schneier.com/blog/archives/2009/07/another_new_aes.html).
 
-#### Why not asymmetric encryption and signature scheme (e.g. ECIES)?
+**Why not asymmetric encryption and signature scheme (e.g. ECIES)?**
 
 At first sight it seems useful to only keep a public key in a less protected space of the app to encrypt and update the backup, but to require user's authentication (e.g. via TouchID on iOS) to retrieve a private key to decrypt the downloaded backup. However, that does not really buy any additional security. Attacker who can potentially get access to such a public key would not be able to decrypt the backup, but most likely would have access to the same private data stored in the same location as that public key. Also, accessing that public key allows attacker to overwrite backup.
 
-#### Why using Bitcoin Merkle Tree instead of a safer one?
+**Why using Bitcoin Merkle Tree instead of a safer one?**
 
-The vulnerability in Bitcoin's Merkle Tree is not a grave one and reusing existing implementation reduces complexity of the scheme. Verifying decrypted plaintext using IV-as-MAC has virtually no extra overhead to mitigate the issue. Introducing alternative Merkle Tree algorithm would require costly review, testing and security analysis.
+The vulnerability in Bitcoin's Merkle Tree is easy to mitigate and reusing existing implementation greatly reduces complexity of the scheme. Verifying decrypted plaintext using IV-as-MAC has virtually no extra overhead. Alternative Merkle Tree algorithm would require costly review, testing and security analysis and may potentially introduce vulnerabilities of its own.
 
 
 Incremental updates
