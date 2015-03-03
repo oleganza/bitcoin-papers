@@ -3,6 +3,10 @@ Research and Development in Bitcoin and Crypto
 
 The following inventions are result of solving real problems in real applications. Most of them are fully invented by Oleg Andreev, some improve the existing ideas. Papers will be updated when better ideas come along. Your feedback is always welcome.
 
+#### [Bitcoin Glossary](BitcoinGlossary.md)
+
+The most complete collection of Bitcoin technical terms.
+
 #### [Bitcoin Blind Signatures](BitcoinBlindSignatures.md)
 
 Distribute control over bitcoins between multiple custodians while maintaining absolute privacy. Custodians only authenticate you in person and allow or deny a transaction, but never know the contents of the transaction.
@@ -18,6 +22,7 @@ A simple multi-signature scheme for establishing game-theoretic trust between tw
 #### [Bitcoin Wallet API](BitcoinWalletAPI/core_spec.md)
 
 Many end-user Bitcoin applications (e.g. [Lighthouse](https://www.vinumeris.com/lighthouse), [Bitmarkets app](http://voluntary.net/bitmarkets/)) have to implement a wallet functionality just to use some bitcoins for their operation. This is typically less safe for the user than the wallet he is already familiar with. We propose a set of secure APIs that allow apps to get some bitcoins from the user's wallet in a secure and flexible manner.
+
 
 
 
