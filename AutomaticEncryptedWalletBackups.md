@@ -47,7 +47,10 @@ Definitions
 
 **Backup Key** is a key derived from the *Master Key* from which all other backup-related keys are derived. Wallet should store that key in a secure location that does not require user interaction to be accessed. (Unlike *Master Key* that should be stored in a location that does require interactive authentication like passcode or Touch ID.) All the keys defined below are derived on the fly from the single *Backup Key*. 
 
-    BackupKey = HMAC-SHA256(key: MasterKey, data: "Automatic Backup Key")
+*Backup Key* is different for mainnet and testnet in order to differentiate test backups of the wallets that support both test network and main Bitcoin network.
+
+    BackupKey = HMAC-SHA256(key: MasterKey, data: "Automatic Backup Key Mainnet")
+    BackupKey = HMAC-SHA256(key: MasterKey, data: "Automatic Backup Key Testnet")
 
 **Wallet Identifier** is a 16-byte string used to identify a wallet backup when storing and retrieving it. It is not included in the backup itself and only used to reference the backup in a standard way when communicating with a storage service.
 
