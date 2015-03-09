@@ -52,13 +52,30 @@ Definitions
     BackupKey = HMAC-SHA256(key: MasterKey, data: "Automatic Backup Key Mainnet")
     BackupKey = HMAC-SHA256(key: MasterKey, data: "Automatic Backup Key Testnet")
 
-**Wallet Identifier** is a 16-byte string used to identify a wallet backup when storing and retrieving it. It is not included in the backup itself and only used to reference the backup in a standard way when communicating with a storage service.
-
-    WalletID = HMAC-SHA256(key: BackupKey, data: "Wallet ID")[0, 16]
-
-**Authentication Key (AK)** is used to verify the integrity of the encrypted backup. This key is computed as follows:
+**Authentication Private Key (AK)** is used to sign the encrypted backup to verify its integrity later. This key is computed as follows:
 
     AK = HMAC-SHA256(key: BackupKey, data: "Authentication Key")
+
+**Authentication Public Key (APub)** is used to verify the integrity of the encrypted backup.
+This key is computed as curve point multiplication on EC secp256k1 with compression (resulting in 33-byte public key):
+
+    APub = Compressed(AK * G(secp256k1))
+
+*Authentication Public Key* can be used by a backend service to prevent unauthorized replacing of the backup by anyone who knows the *Wallet Identifier*.
+
+**Wallet Identifier** is a Base58Check-encoded string used to identify a wallet backup when storing and retrieving it.
+It is not included in the backup itself and only used to reference the backup in a standard way when communicating with a storage service.
+
+It is formed like Bitcoin address, from a public key *APub*, with byte 0x49 (prefix letter "W") as a prefix.
+There is no testnet/mainnet distinction for Wallet IDs (see *Backup Key*).
+
+    WalletID = Base58Check(0x49 || RIPEMD-160(SHA-256(APub)))
+
+Example:
+
+    AK       = 2949c1b1e371f3c3472a018e2c26916ea70e9716b7020037de748c81eb400c8a
+    APub     = 036b89db3282ef240b53a5f9a5f6e5013bc3e42a81ac4889c388e7126f4e02a677
+    WalletID = WbeXeTPYSPwSpQPECSPdNboLW3YioW1n9e
 
 **Encryption Key (EK)** is a 16-byte encryption key for AES-128-CBC algorithm with PKCS7 padding. It is defined as follows:
 
@@ -103,18 +120,21 @@ Finally, the last pass produces a single hash which we call a *Merkle Root*:
 
 **Version Byte** is a byte of value 0x01 indicating the version of this specification.
 
-**Signature** is a 32-byte string authenticating the *Merkle Root* of the *Ciphertext*. It is defined as follows:
+**Signature** is a variable-length DER-encoded ECDSA signature (up to 72 bytes) authenticating the *Merkle Root* of the *Ciphertext*. It is defined as follows:
 
-    Signature = HMAC-SHA256(key: AK, data: (VersionByte || Timestamp || IV || MerkleRoot))
+    Signature = ECDSA(private key: AK, hash: SHA-256(SHA-256(VersionByte || Timestamp || IV || MerkleRoot))))
+
+**Signature Length** is a one-byte unsigned integer encoding the byte length of the signature (typically in the range of 68..72, maximum value is 72).
 
 **Backup Payload** is a variable-length string containing a fully serialized encrypted backup:
 
-    BackupPayload = VersionByte || Timestamp || IV || Ciphertext || Signature
+    BackupPayload = VersionByte || Timestamp || IV || Ciphertext || Signature || SignatureLength
 
-The location and length of the Ciphertext:
+Signature length is appended, rather than prepended in order to simplify computation of the ciphertext length.
+We don't use varint length encoding for the ciphertext, instead we compute its position and length as follows:
 
     Offset = 1 + 4 + 16 = 21
-    Length = Length(BackupPayload) - (1 + 4 + 16 + 32)
+    Length = Length(BackupPayload) - (1 + 4 + 16 + 32 + SignatureLength)
 
 
 Creating Backup
@@ -158,11 +178,14 @@ Incremental updates
 
 We expect a modest amount of metadata to be stored (below 1-2 Mb), so all updates can be done by uploading the whole *Backup Payload*. However, if the wallet needs to break down backups in a chain of independent chunks, it is possible to do without changing the scheme. 
 
-Once the backup becomes too big (e.g. approaches 1 Mb), wallet may generate another *Wallet ID* for the second part and store only additional data that is not already stored in the first part. Next parts will identified by linking to exact versions of the previous parts using their *Signatures*:
+Once the backup becomes too big (e.g. approaches 1 Mb), wallet may generate another *Authentication Key* and corresponding *Wallet IDs* for the second part and store only additional data that is not already stored in the first part. Next parts will identified by linking to exact versions of the previous parts using their *Signatures*:
 
-    WalletID1 = HMAC-SHA256(key: BackupKey, data: "Wallet ID")[0, 16]
-    WalletID2 = HMAC-SHA256(key: BackupKey, data: "Wallet ID" || Signature1)[0, 16]
-    WalletID3 = HMAC-SHA256(key: BackupKey, data: "Wallet ID" || Signature2)[0, 16]
+    AK1 = HMAC-SHA256(key: BackupKey, data: "Authentication Key")
+    WalletID1 = Base58Check(0x49 || RIPEMD-160(SHA-256(PublicKey(AK1))))
+    AK2 = HMAC-SHA256(key: BackupKey, data: "Authentication Key" || Signature1)
+    WalletID2 = Base58Check(0x49 || RIPEMD-160(SHA-256(PublicKey(AK2))))
+    AK3 = HMAC-SHA256(key: BackupKey, data: "Authentication Key" || Signature2)
+    WalletID3 = Base58Check(0x49 || RIPEMD-160(SHA-256(PublicKey(AK3))))
     ...
 
 Using this scheme, wallet first downloads backup identified by *WalletID1*, then using its *Signature1* computes *WalletID2* and attempts to download second part and so on.
