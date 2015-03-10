@@ -39,14 +39,14 @@ Let **k** be a unique random number chosen per signature (integer in the interva
 Then the ECDSA signature is defined as a pair **(Kx, s)**, where:
 
 * **Kx** is x-coordinate of the point *k·G* on the elliptic curve modulo *n*.
-* **s** = *k-1·(h + t·Kx) mod n*
+* **s** = *k<sup>-1</sup>·(h + t·Kx) mod n*
 * Signature is invalid if either *Kx* or *s* are zero.
-* Note: *k-1* is an inverse of *k* modulo *n* such that *(k^-1·k) = 1 mod n*.
+* Note: *k<sup>-1</sup>* is an inverse of *k* modulo *n* such that *(k<sup>-1</sup>·k) = 1 mod n*.
 	
 The verification requires 3 objects to be present: message hash **h**, public key **T** *(=t·G)* and a signature pair **(Kx, s)**. Verification steps are as follows:
 
 1. Verify that *Kx* and *s* are integers in the interval [1, *n* – 1].
-2. Compute *w = s-1 mod n*.
+2. Compute *w = s<sup>-1<sup> mod n*.
 3. Compute *u1 = e·w mod n*.
 4. Compute *u2 = Kx·w mod n*.
 5. Compute *X = u1·G + u2·T*.
@@ -87,7 +87,7 @@ Lets expand *s2* as transformation of *h*:
 
 At the same time we want s2 to be the second part of the ECDSA signature as a function of h:
  
-* *s2 = k-1·(h + t·Kx) = k-1·h + k-1·t·Kx mod n* **(2)**
+* *s2 = k<sup>-1</sup>·(h + t·Kx) = k<sup>-1</sup>·h + k<sup>-1</sup>·t·Kx mod n* **(2)**
 
 where
 
@@ -99,31 +99,31 @@ Alice needs to know *Kx* and *t·G*. By comparing (1) and (2) we can find the re
 
 From (1) and (2) as equivalent linear transformations of an independent variable h follows:
 
-* *k-1 = c·p·a mod n* **(3)** 
-* *k-1·t·Kx = c·p·b + c·q + d mod n* **(4)**
+* *k<sup>-1</sup> = c·p·a mod n* **(3)** 
+* *k<sup>-1</sup>·t·Kx = c·p·b + c·q + d mod n* **(4)**
 
 From (3) we can find *k* and *K*:
 
-* *k = (c·p·a)-1 mod n*	 					**(5)** 
-* *K = (c·a)-1·p-1·G*   					**(6)**
+* *k = (c·p·a)<sup>-1</sup> mod n*	 					**(5)** 
+* *K = (c·a)<sup>-1</sup>·p<sup>-1</sup>·G*   					**(6)**
 
 
-It’s evident from (6) that Bob can communicate *p-1·G* to Alice without revealing *p*. So Alice can know *K* and *Kx* without knowing *k*.
+It’s evident from (6) that Bob can communicate *p<sup>-1</sup>·G* to Alice without revealing *p*. So Alice can know *K* and *Kx* without knowing *k*.
 
 From (4) we can find *t* and *T*:
 
-* *t = Kx-1·(k·c·p·b + k·c·q + k·d) mod n*		
+* *t = Kx<sup>-1</sup>·(k·c·p·b + k·c·q + k·d) mod n*		
 
 Expanding *k*:
 
-* *t = Kx-1·((c·p·a)-1·c·p·b + (c·p·a)-1·c·q + (c·p·a)-1·d) mod n* 
-* *t = (a·Kx)-1·(b + q·p-1 + d·c-1·p-1) mod n*
+* *t = Kx<sup>-1</sup>·((c·p·a)<sup>-1</sup>·c·p·b + (c·p·a)<sup>-1</sup>·c·q + (c·p·a)<sup>-1</sup>·d) mod n* 
+* *t = (a·Kx)<sup>-1</sup>·(b + q·p<sup>-1</sup> + d·c<sup>-1</sup>·p<sup>-1</sup>) mod n*
 
 Multiplying by *G* to arrive at a target public key:
 
-* *T = t·G = (a·Kx)-1·(b·G + (q·p-1·G) + d·c-1·(p-1·G))*   **(7)**
+* *T = t·G = (a·Kx)<sup>-1</sup>·(b·G + (q·p<sup>-1</sup>·G) + d·c<sup>-1</sup>·(p<sup>-1</sup>·G))*   **(7)**
 
-From (7) we see that Bob can communicate EC points *(p-1·G)* and *(q·p-1·G)* without compromising secrecy of *p* or *q*. That way Alice can determine public key *T* that will verify her signature in the future, without Bob ever knowing *T*.
+From (7) we see that Bob can communicate EC points *(p<sup>-1</sup>·G)* and *(q·p<sup>-1</sup>·G)* without compromising secrecy of *p* or *q*. That way Alice can determine public key *T* that will verify her signature in the future, without Bob ever knowing *T*.
 
 Now we have everything to present the protocol of constructing a blind signature by Bob for Alice.
 
@@ -133,9 +133,9 @@ Core Protocol
 
 1. Alice chooses random numbers *a*, *b*, *c*, *d* within [1, *n* – 1].
 
-2. Bob chooses random numbers *p*, *q* within [1, *n* – 1] and sends two EC points to Alice: *P = (p-1·G)* and *Q = (q·p-1·G)*.
+2. Bob chooses random numbers *p*, *q* within [1, *n* – 1] and sends two EC points to Alice: *P = (p<sup>-1</sup>·G)* and *Q = (q·p<sup>-1</sup>·G)*.
 
-3. Alice computes *K = (c·a)-1·P* and public key *T = (a·Kx)-1·(b·G + Q + d·c-1·P)*. Bob cannot know if his parameters were involved in *K* or *T* without the knowledge of *a*, *b*, *c* and *d*. Thus, Alice can safely publish *T* (e.g. in a Bitcoin transaction that locks funds with *T*).
+3. Alice computes *K = (c·a)<sup>-1</sup>·P* and public key *T = (a·Kx)<sup>-1</sup>·(b·G + Q + d·c<sup>-1</sup>·P)*. Bob cannot know if his parameters were involved in *K* or *T* without the knowledge of *a*, *b*, *c* and *d*. Thus, Alice can safely publish *T* (e.g. in a Bitcoin transaction that locks funds with *T*).
 
 4. When time comes to sign a message (e.g. redeeming funds locked in a Bitcoin transaction), Alice computes the hash *h* of her message.
 
@@ -214,13 +214,13 @@ Alice sends Bob a blinded hash *h2 = a·h + b (mod n)* and index *i*.
 Because *P* and *Q* are not simply the public keys of *p* and *q*, Bob needs to do extra operations to derive *p* and *q* from *w* and *i* (following BIP32 would not be enough):
 
 
-From *P = p-1·G = (w + x)·G* (where *x* is a factor in *ND(W, 2·i + 0)*) follows:
+From *P = p<sup>-1</sup>·G = (w + x)·G* (where *x* is a factor in *ND(W, 2·i + 0)*) follows:
 		
-* *p = (w + x)-1 mod n*
+* *p = (w + x)<sup>-1</sup> mod n*
 		
-From *Q = q·p-1·G = (w + y)·G* (where *y* is a factor in *ND(W, 2·i + 1)*) follows:
+From *Q = q·p<sup>-1</sup>·G = (w + y)·G* (where *y* is a factor in *ND(W, 2·i + 1)*) follows:
 	
-* *q = (w + y)·(w + x)-1 mod n*
+* *q = (w + y)·(w + x)<sup>-1</sup> mod n*
 		
 Factors *x* and *y* are produced according to BIP32 as first 32 bytes of HMAC-SHA512. See [BIP32](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki) for details.
 
