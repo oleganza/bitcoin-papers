@@ -46,7 +46,7 @@ Then the ECDSA signature is defined as a pair **(Kx, s)**, where:
 The verification requires 3 objects to be present: message hash **h**, public key **T** *(=t·G)* and a signature pair **(Kx, s)**. Verification steps are as follows:
 
 1. Verify that *Kx* and *s* are integers in the interval [1, *n* – 1].
-2. Compute *w = s<sup>-1<sup> mod n*.
+2. Compute *w = s<sup>-1</sup> mod n*.
 3. Compute *u1 = e·w mod n*.
 4. Compute *u2 = Kx·w mod n*.
 5. Compute *X = u1·G + u2·T*.
