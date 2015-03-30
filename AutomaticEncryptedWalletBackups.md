@@ -129,7 +129,7 @@ Finally, the last pass produces a single hash which we call a *Merkle Root*:
 
     MerkleRoot = H(p || q)
 
-**Timestamp** is a 4-byte unsigned integer containing UNIX timestamp of the moment when the backup was created. It allows wallet to evaluate how recent the backup is.
+**Timestamp** is a 4-byte little-endian unsigned integer containing UNIX timestamp of the moment when the backup was created. It allows wallet to evaluate how recent the backup is.
 
 **Version Byte** is a byte of value 0x01 indicating the version of this specification.
 
