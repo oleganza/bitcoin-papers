@@ -87,9 +87,22 @@ Example:
 
 Note that *IV* also acts as a plaintext MAC, a property that we use to protect against mutable *Merkle Tree* (see below).
 
+**VarInt** is a variable-length integer also known as "Satoshi CompactSize". 
+The byte value below `0xfd` contains the byte length of the object that follows. 
+Larger values are encoded with 3, 5 and 9 bytes.
+
+Value             | Storage Length  | Format                                           |
+------------------|-----------------|--------------------------------------------------| 
+`< 0xfd`          | 1               | `uint8_t`                                        |
+`<= 0xffff`       | 3               | `0xfd` followed by the value as `uint16_t` (LE)  |
+`<= 0xffffffff`   | 5               | `0xfe` followed by the value as `uint32_t` (LE)  |
+`> 0xffffffff`    | 9               | `0xff` followed by the value as `uint64_t` (LE)  |
+
 **Ciphertext** is a AES-128-CBC transformation of the *Plaintext* padded to whole 16-byte blocks according to PKCS7.
 
     CT = AES-128-CBC-PKCS7(data: Plaintext, key: EK, iv: IV)
+
+**Ciphertext Length** is a *VarInt* unsigned integer encoding the byte length of the ciphertext.
 
 **Hash256** is a double-pass SHA-256:
 
@@ -116,7 +129,7 @@ Finally, the last pass produces a single hash which we call a *Merkle Root*:
 
     MerkleRoot = H(p || q)
 
-**Timestamp** is a 4-byte unsigned integer containing UNIX timestamp of the moment when backup was created. It allows wallet to evaluate how recent the backup is.
+**Timestamp** is a 4-byte unsigned integer containing UNIX timestamp of the moment when the backup was created. It allows wallet to evaluate how recent the backup is.
 
 **Version Byte** is a byte of value 0x01 indicating the version of this specification.
 
@@ -124,18 +137,13 @@ Finally, the last pass produces a single hash which we call a *Merkle Root*:
 
     Signature = ECDSA(private key: AK, hash: SHA-256(SHA-256(VersionByte || Timestamp || IV || MerkleRoot))))
 
-**Signature Length** is a one-byte unsigned integer encoding the byte length of the signature (typically in the range of 68..72, maximum value is 72).
+**Signature Length** is a *VarInt* unsigned integer encoding the byte length of the signature (typical length is 72 bytes or less).
 
 **Backup Payload** is a variable-length string containing a fully serialized encrypted backup:
 
-    BackupPayload = VersionByte || Timestamp || IV || Ciphertext || Signature || SignatureLength
+    BackupPayload = VersionByte || Timestamp || IV || CiphertextLength || Ciphertext || SignatureLength || Signature
 
-Signature length is appended, rather than prepended in order to simplify computation of the ciphertext length.
-We don't use varint length encoding for the ciphertext, instead we compute its position and length as follows:
-
-    Offset = 1 + 4 + 16 = 21
-    Length = Length(BackupPayload) - (1 + 4 + 16 + 32 + SignatureLength)
-
+The offset of the *Ciphertext Length* is 1 + 4 + 16 = 21.
 
 Creating Backup
 ---------------
