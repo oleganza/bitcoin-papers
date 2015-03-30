@@ -133,9 +133,9 @@ Finally, the last pass produces a single hash which we call a *Merkle Root*:
 
 **Version Byte** is a byte of value 0x01 indicating the version of this specification.
 
-**Signature** is a variable-length DER-encoded ECDSA signature (up to 72 bytes) authenticating the *Merkle Root* of the *Ciphertext*. It is defined as follows:
+**Signature** is a variable-length DER-encoded ECDSA-[RFC6979](https://tools.ietf.org/html/rfc6979#section-3.2) signature (up to 72 bytes) authenticating the *Merkle Root* of the *Ciphertext*. It is defined as follows:
 
-    Signature = ECDSA(private key: AK, hash: SHA-256(SHA-256(VersionByte || Timestamp || IV || MerkleRoot))))
+    Signature = ECDSA-RFC6979(private key: AK, hash: SHA-256(SHA-256(VersionByte || Timestamp || IV || MerkleRoot))))
 
 **Signature Length** is a *VarInt* unsigned integer encoding the byte length of the signature (typical length is 72 bytes or less).
 
@@ -230,14 +230,37 @@ For instance, iCloud allows access with a valid Apple ID account and its databas
 Implementations
 ---------------
 
-TODO: list implementations in various languages and libraries.
-
+* [Objective-C implementation](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCEncryptedBackup.h)
 
 Test Vectors
 ------------
 
-TODO: generate test vectors for backups of various lengths (5 bytes, 17 bytes, 2000 bytes, 7000 bytes).
-
+    Master Key = 08c17482950a872178b8030c8f8a63bc6e5f9f680dd25739e1ec7e0b544f40f9 (32 bytes in hex)
+    Backup Key Mainnet = 7618f25cd5faadd52d0ea3b608b0c076664f5816b81311017985ae229157057a (32 bytes in hex)
+    Backup Key Testnet = caa57de4c3d9c77186175fbfdc326997162da0ce1b74022a51c600838449b2c3 (32 bytes in hex)
+    Plaintext = "The Times 03/Jan/2009 Chancellor on brink of second bailout for banks" (UTF-8, without quotes)
+    Timestamp = 1427720967
+    Encrypted Data Mainnet = 01074b1955bf07aaa979ae8af6eebfea5da8e83cad505edbaade9ba4ed528a8d
+                             e36c95ece996189dedf4756fba2599f94b4f370d701366e2f0ba4e59111c0787
+                             708cf4b0b82de558b4d8bf5d90b3512f09814d605d4c14f2f85b596211f83918
+                             c31c4bef19ea473045022100ddbc9b06625c2b3c9cbfb27b6ac39596bd13daf4
+                             3d4ddecbb7257a0d26f5e2c402200a5bd5fd27df7ac262ac3cff9d5398742c6f
+                             d9c76c427548667bee45dcb1134c (174 bytes in hex)
+                             
+    // Intermediate Values:
+    Authentication Private Key = 44b45878c33c974179f5363fee95f9e9d4a60c97e9c865e58b57bef3558034f4 (32 bytes in hex)
+    Authentication Public Key  = 028747be6de07552c48f9db23617792d47df1accd611175f6dfe636f4098984a09 (33 bytes in hex)
+    Wallet ID                  = WmEp7EPk8vKMgXQQGWgh1AYhmY8Usw6kwL (ASCII)
+    Initialization Vector      = bf07aaa979ae8af6eebfea5da8e83cad (16 bytes in hex)
+    Encryption Key             = 58369379e5100b58cd49c97171f29f3d (16 bytes in hex)
+    Ciphertext                 = 5edbaade9ba4ed528a8de36c95ece996189dedf4756fba2599f94b4f370d7013
+                                 66e2f0ba4e59111c0787708cf4b0b82de558b4d8bf5d90b3512f09814d605d4c
+                                 14f2f85b596211f83918c31c4bef19ea (80 bytes in hex)
+    Merkle Root                = 9e913cd60f7df551b3baa320602bfba78489921d661362a64a03550a45add008 (32 bytes in hex)
+    Signature                  = 3045022100ddbc9b06625c2b3c9cbfb27b6ac39596bd13daf43d4ddecbb7257a
+                                 0d26f5e2c402200a5bd5fd27df7ac262ac3cff9d5398742c6fd9c76c42754866
+                                 7bee45dcb1134c (71 byte in hex; nonce generated according to RFC6979)
+    
 
 References
 ----------
@@ -245,4 +268,5 @@ References
 * [BIP 32](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki) — hierarchical deterministic wallets.
 * [BIP 37 Partial Merkle Branch Format](https://github.com/bitcoin/bips/blob/master/bip-0037.mediawiki#Partial_Merkle_branch_format)
 * [AES-256 weakness](https://www.schneier.com/blog/archives/2009/07/another_new_aes.html) explained by Bruce Schneier.
+* [RFC 6979](https://tools.ietf.org/html/rfc6979) specifying algorithm for deterministic ECDSA signatures.
 
