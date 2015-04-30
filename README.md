@@ -1,7 +1,7 @@
 Research and Development in Bitcoin and Crypto
 ==============================================
 
-The following inventions are result of solving real problems in real applications. Most of them are fully invented by Oleg Andreev, some improve the existing ideas. Papers will be updated when better ideas come along. Your feedback is always welcome.
+The following papers are result of solving real problems in real applications. Most of them are fully invented by Oleg Andreev, some improve the existing ideas. Papers will be updated when better ideas come along. Feedback is welcome.
 
 #### [Bitcoin Glossary](BitcoinGlossary.md)
 
@@ -23,6 +23,9 @@ A simple multi-signature scheme for establishing game-theoretic trust between tw
 
 Many end-user Bitcoin applications (e.g. [Lighthouse](https://www.vinumeris.com/lighthouse), [Bitmarkets app](http://voluntary.net/bitmarkets/)) have to implement a wallet functionality just to use some bitcoins for their operation. This is typically less safe for the user than the wallet he is already familiar with. We propose a set of secure APIs that allow apps to get some bitcoins from the user's wallet in a secure and flexible manner.
 
+#### [Two-Factor Wallet Backup](TwoFactorWalletBackup.md)
+
+Bitcoin wallet's master key must be protected against compromise and data loss. We propose a solution that does not require user to remember or write down any additional secret information, yet provides two-factor protection against both theft and loss.
 
 
 
