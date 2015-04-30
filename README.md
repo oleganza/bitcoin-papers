@@ -27,7 +27,9 @@ Many end-user Bitcoin applications (e.g. [Lighthouse](https://www.vinumeris.com/
 
 Bitcoin wallet's master key must be protected against compromise and data loss. We propose a solution that does not require user to remember or write down any additional secret information, yet provides two-factor protection against both theft and loss.
 
+#### [Decentralized Payment Network](PaymentNetwork.md)
 
+Blockchain is great for ultimate settlement of ownership, but it does not efficiently scale to billions of regular transactions. We propose an overlay protocol that enables clearing small payments via a decentralized infinitely scalable network of IOU swaps backed by actual bitcoins locked up using [Join Escrow](JointEscrow.md).
 
 About
 -----
