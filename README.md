@@ -29,7 +29,7 @@ Bitcoin wallet's master key must be protected against compromise and data loss. 
 
 #### [Decentralized Payment Network](PaymentNetwork.md)
 
-Blockchain is great for ultimate settlement of ownership, but it does not efficiently scale to billions of regular transactions. We propose an overlay protocol that enables clearing small payments via a decentralized infinitely scalable network of IOU swaps backed by actual bitcoins locked up using [Join Escrow](JointEscrow.md).
+Blockchain is great for ultimate settlement of ownership, but it does not efficiently scale to billions of regular transactions. We propose an overlay protocol that enables clearing small payments via a decentralized infinitely scalable network of IOU swaps backed by actual bitcoins locked up using [Joint Escrow](JointEscrow.md).
 
 About
 -----
