@@ -1,5 +1,5 @@
-Turing-complete smart contract engine via Bitcoin soft fork (DRAFT)
-===================================================================
+Smart contract extensions to Bitcoin via soft fork (DRAFT)
+==========================================================
 
 Oleg Andreev <oleganza@gmail.com>
 
