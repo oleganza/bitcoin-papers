@@ -23,9 +23,9 @@ A simple multi-signature scheme for establishing game-theoretic trust between tw
 
 Many end-user Bitcoin applications (e.g. [Lighthouse](https://www.vinumeris.com/lighthouse), [Bitmarkets app](http://voluntary.net/bitmarkets/)) have to implement a wallet functionality just to use some bitcoins for their operation. This is typically less safe for the user than the wallet he is already familiar with. We propose a set of secure APIs that allow apps to get some bitcoins from the user's wallet in a secure and flexible manner.
 
-#### [Two-Factor Wallet Backup](TwoFactorWalletBackup.md)
+#### [Key rotation scheme for second-factor cryptographic keys](SecondFactorKeyRotation.md)
 
-Bitcoin wallet's master key must be protected against compromise and data loss. We propose a solution that does not require user to remember or write down any additional secret information, yet provides two-factor protection against both theft and loss.
+Bitcoin wallet's master key must be protected against compromise and data loss. We propose a key rotation solution to ensure robust 2FA service protecting the master key.
 
 #### [Decentralized Payment Network](PaymentNetwork.md)
 
