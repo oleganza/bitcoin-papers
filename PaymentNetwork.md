@@ -3,6 +3,7 @@ Decentralized Payment Network
 
 Oleg Andreev <oleganza@gmail.com>
 
+
 Introduction
 ------------
 
@@ -41,6 +42,25 @@ Political problems solved:
 * Some amount of cash needs to be locked up with random nodes most of the time. If one of the nodes is offline, payments can't be cleared through that node. Although, it could not be a big problem as the network is useful for small-ish payments and every node will have 10-15 contracts, so it will tolerate occasional unavailability of some of them. 
 
 
+Prior art
+---------
+
+### Straw Pay and Stroem protocol
+
+Unfortunately, not much is published yet. Most interesting info is in Reddit comments.
+ 
+* [Design info](http://www.reddit.com/r/Bitcoin/comments/2r3ri7/strawpay_cheap_and_secure_micropayments/)
+* [Github Account](https://github.com/strawpay)
+
+
+### Lightning Network
+
+* [Web page](http://lightning.network)
+* [Slides](http://lightning.network/lightning-network.pdf)
+* [Paper Draft v0.5](http://lightning.network/lightning-network-paper-DRAFT-0.5.pdf)
+* [Mike Hearn's analysis](https://medium.com/@octskyward/the-capacity-cliff-586d1bf7715e)
+
+
 Compatibility
 -------------
 
@@ -66,6 +86,8 @@ Message Protocol
 Payment message is an atomic transaction swapping IOUs between all nodes in a given path. When all nodes have placed a signature on the message, it becomes finalized and acts as a receipt that every creditor demonstrates to its debtor.
 
 TBD.
+
+
 
 
 
