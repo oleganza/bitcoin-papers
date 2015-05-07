@@ -1,5 +1,5 @@
-Two-Factor Wallet Backup (DRAFT)
-================================
+Key rotation scheme for second-factor cryptographic keys (DRAFT)
+================================================================
 
 Oleg Andreev <oleganza@gmail.com>
 
