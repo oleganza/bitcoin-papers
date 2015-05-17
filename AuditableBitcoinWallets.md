@@ -113,7 +113,7 @@ Applicability
 
 This document primarily applies to wallets managing a single user-stored key and issuing transactions to externally specified addresses and amounts. 
 
-* Hardware wallets like Trezor, Ledger and Mycelium Card fall under this category.
+* Hardware wallets like Trezor, Ledger and Mycelium Card.
 * Software wallets like Bitcoin Core (Bitcoin-QT), Multibit, Breadwallet, Mycelium, Hive.
 * Toolkits and libraries like CoreBitcoin, btcd, Bitcoin-Ruby, BitcoinJ that allow creating aforementioned wallets.
 
@@ -126,7 +126,7 @@ Deployment
 
 This specification should be reviewed for correctness and completeness by independent security experts, hardware and software wallet developers.
 
-After **November 30, 2015** all applicable hardware and software wallets and toolkits (libraries) shall be considered **broken** unless they conform to this specification. Authors of these products have over 6 months to add support for auditablity on API and UI level and if they decide not to, I declare them guilty of **intentionally putting their customers under risk**. 
+After **November 30, 2015** all applicable hardware and software wallets and toolkits (libraries) shall be considered **broken** unless they conform to this specification. Authors of these products have over 6 months to add support for auditablity on API and UI level. If they decide not to, they are guilty of **intentionally putting their customers under risk**.
 
 Applicable products released after **May 17, 2016** (12 months since publication) not conforming to this specification shall be considered **intentionally malicious and backdoored**.
 
