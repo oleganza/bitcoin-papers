@@ -97,13 +97,13 @@ Use [BIP 32](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki) or 
 
 #### Sorting Outputs
 
-Let `SortingKey = HMAC-SHA256(data: "Determinstic Sorting Key", key: MasterSeed)` which can be stored separately from a Master Seed, potentially in a less secure location on a device.
+Let `SortingKey = HMAC-SHA256(data: "Deterministic Sorting Key", key: MasterSeed)` which can be stored separately from a Master Seed, potentially in a less secure location on a device.
 
 Use `HMAC-SHA256(key: SortingKey, data: SerializedOutput)` as a sorting descriptor (in ascending order).
 
 #### Sorting Inputs
 
-Let `SortingKey = HMAC-SHA256(data: "Determinstic Sorting Key", key: MasterSeed)` which can be stored separately from a Master Seed, potentially in a less secure location on a device.
+Let `SortingKey = HMAC-SHA256(data: "Deterministic Sorting Key", key: MasterSeed)` which can be stored separately from a Master Seed, potentially in a less secure location on a device.
 
 Use `HMAC-SHA256(key: SortingKey, data: SerializedInput)` as a sorting descriptor (in ascending order). Inputs may be signed, half-signed or completely unsigned, but that must be deterministic.
 
