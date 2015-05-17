@@ -39,6 +39,10 @@ Proposal to extend scripting capabilities in Bitcoin via a soft fork that allows
 
 An co-signing oracle that limits withdrawals could be deployed on the satellite to close the window of opportunity for attack. Oracle generates and stores master key for signing and encryption. Full bitcoin node implementation onboard enables monitoring withdrawals and handling billing directly. Clients store all data themselves, encrypted by the oracle's key where necessary. Cooperating on-earth systems handle withdrawal notifications and cancellation, while full financial privacy is enabled by end-to-end encryption of all activity between the client and the oracle. TTS detects drastic trajectory changes and destroys all sensitive information in case of meaningful deviation (e.g. hijacking).
 
+#### [Auditable Bitcoin Wallets](AuditableBitcoinWallets.md) (BIP proposal)
+
+Hardware Bitcoin wallets are obvious targets for backdoors. We propose a unified method of auditing any wallet for presence of potential backdoors or bugs. The specification also applies to software wallets executed by general-purpose computers, although these may be more challenging to audit.
+
 
 About
 -----
