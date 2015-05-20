@@ -1,5 +1,5 @@
-Auditable Bitcoin Wallets (BIP Proposal)
-========================================
+BIP Draft: Auditable Bitcoin Wallets
+====================================
 
 Date: May 17, 2015.
 Author: Oleg Andreev <oleganza@gmail.com>
