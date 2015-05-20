@@ -1,9 +1,9 @@
 BIP Draft: Auditable Bitcoin Wallets
 ====================================
 
-Date: May 17, 2015.
-Author: Oleg Andreev <oleganza@gmail.com>
-Status: Draft
+    Date: May 17, 2015.
+    Author: Oleg Andreev <oleganza@gmail.com>
+    Status: Draft
 
 Hardware Bitcoin wallets are obvious targets for backdoors. We propose a unified method of auditing any wallet for presence of potential backdoors or bugs. The specification also applies to software wallets executed by general-purpose computers, although these may be more challenging to audit.
 
