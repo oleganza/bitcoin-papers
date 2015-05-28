@@ -1,16 +1,30 @@
-Contract extensions to Bitcoin (DRAFT)
-======================================
+Pay-to-contract extension to Bitcoin transactions (DRAFT)
+=========================================================
 
-Oleg Andreev <oleganza@gmail.com>
+Author: Oleg Andreev <oleganza@gmail.com>
+Date: May 27, 2015
+Status: Draft
 
 Introduction
 ------------
 
-Bitcoin's scripting language is simple, but limited. Scripts act as predicates that enable specific input-output connections. Scripts cannot introspect data outside themselves: for example, they cannot access the balance or other transaction parameters, place constraints on the transaction, keep track of additional state across multiple transactions.
+Bitcoin's scripting language is simple, but limited. Scripts act as predicates that enable specific input-output connections between transactions. Scripts cannot introspect data outside themselves. For example, they cannot access the balance or other transaction parameters, place constraints on the transaction, keep track of additional state across multiple transactions. Recently proposed [BIP65](https://github.com/bitcoin/bips/blob/master/bip-0065.mediawiki) (CHECKLOCKTIMEVERIFY) is a step towards giving a script more insight into transaction it is used in.
 
-We propose an extension to Bitcoin predicate language that incurs minimal cost of execution, but enables much richer variety of contracts. Smart contracts can introspect their transactions and carry the shared state through several transactions. This extension is enabled as a soft-fork migration (similar to P2SH).
+In this specification we propose an extension to Bitcoin scripting language that still incur little cost, but enable much richer variety of contracts. Contracts can introspect their transactions and carry the shared state through several transactions. This extension is enabled as a soft-fork migration (similar to P2SH).
 
-Contracts explicitly work in terms of funds denominated in bitcoin without introducing 3rd party assets. Security of contracts for assets with 3rd party liability (e.g. Open Assets protocol) is equivalent to security of contracts validated by that 3rd party themselves (or an equivalent distributed protocol, but detached from Bitcoin consensus). Only bitcoin-denominated funds are free of counterparty risk and therefore actually benefit from network-enforced contracts. That said, network-enforced contracts are still useful when trading 3rd party assets with bitcoins.
+Contracts explicitly work in terms of funds denominated in bitcoin without introducing 3rd party assets. Security of contracts for assets with 3rd party liability (e.g. [Open Assets protocol](https://github.com/OpenAssets/open-assets-protocol/blob/master/specification.mediawiki)) is equivalent to security of contracts validated by that 3rd party themselves (or an equivalent distributed protocol, but detached from the Bitcoin consensus). Only bitcoin-denominated funds are free of counterparty risk and therefore actually benefit from network-enforced contracts. That said, network-enforced contracts are still useful when trading 3rd party assets with bitcoins.
+
+Overview
+--------
+
+We introduce a new kind of script: **Pay-to-Contract** (**P2C**). It is compatible with all existing nodes and becomes safely usable when super-majority of miners begin enforcing the rules. Deployment of P2C is similar to the one of [P2SH aka BIP 16](https://github.com/bitcoin/bips/blob/master/bip-0016.mediawiki).
+
+For each instance of P2C script nodes maintain a shared state called **Contract Stack**. This stack is shared by all unspent outputs using this contract as their script. This allows arbitrary number of participants to share common state of the contract. To prevent denial-of-service attacks, there are strict restrictions on the size of the contract stack. We propose total limit of 1024 bytes for all data pushed on that stack and maximum of 32 items.
+
+Each P2C script contains three parts: **initialization**, **entrance** and **transition** scripts. Initialization script is executed once per contract and provides initial value on the contract stack. Entrance script is executed every time an unspent output is added to this contract. Transition script is executed when contract output is being spent.
+
+All scripts have access to the amount on the relevant output. Transition scripts can also inspect scripts and amounts of the further outputs. This allows contracts to migrate from one person to another or to transition to another contract.
+
 
 Definitions
 -----------
@@ -29,7 +43,7 @@ For backwards compatibility and to allow soft-fork upgrade, the contract is enco
 
 First two scripts are provided as-is, in a serialized form. Predicate script is represented by its hash like in P2SH.
 
-**Initialization Script** is executed once per output script and sets the initial state of the *Contract Stack*. Typically it pushes single value 0. The script in the contract is present in a serialized form, as PUSHDATA operation.
+**Initialization Script** is executed once per output script and sets the initial state of the *Contract Stack*. Typically it pushes a single value 0. The script in the contract is present in a serialized form, as PUSHDATA operation.
 
 **Entrance Script** is executed each time new unspent output is added with the given contract. It may do nothing or modify *Contract Stack*, e.g. by incrementing total balance. Like initialization script, it is present in serialized form, as PUSHDATA operation.
 
@@ -42,7 +56,7 @@ In addition to classic operators, we introduce new operators. But before we dive
 Example
 -------
 
-Lets say we want to implement a crowd-funding mechanism with massive control over funds.
+Lets say we want to implement a crowdfunding mechanism with democratic control over funds.
 
 N users commit funds invidually to a contract that enables company to unlock funds gradually (e.g. 25% every month over a course of 4 months), but a vote M-of-N allows to pull remaining funds proportionally to every participant (bankruptcy procedure). Company management will be able to commit to long-term contracts based on the contract, but if it mismanages the funds, investors can back out and save the remaining assets.
 
@@ -81,7 +95,7 @@ Note that in case of failure to vote for bankrupcy, funds can proceed towards th
         0 // add initial value zero to Contract Stack
       }
       enter {
-        OUTPUTAMOUNT ADD // add output amount to the contract total balance
+        CURRENTAMOUNT ADD // add output amount to the contract total balance
       }
       func contractAmountRaised {
         FROMCONTRACTSTACK DUP TOCONTRACTSTACK // get the value from contract stack and put back a copy
@@ -106,7 +120,7 @@ Note that in case of failure to vote for bankrupcy, funds can proceed towards th
     Contract Script                                                           Bytes          Total 
     ----------------------------------------------------------------------------------------------
     <OP_0>                                                                    1+1            2
-    <OP_OUTPUTAMOUNT OP_ADD>                                                  1+2            5
+    <OP_CURRENTAMOUNT OP_ADD>                                                 1+2            5
     DROP DROP                                                                 2              7
     <Transition Script Hash> HASH160 EQUALVERIFY                              20+1+1         29
     
@@ -118,22 +132,22 @@ Note that in case of failure to vote for bankrupcy, funds can proceed towards th
     ----------------------------------------------------------------------------------------------
     IF // refund                                                              1              1
       Deadline CHECKLOCKTIMEVERIFY DROP                                       1+4+1+1        8
-      CONTRACTAMOUNT Target LESSTHAN VERIFY                                   1+1+8+2        20
-      BackerPubkey CHECKSIG                                                   1+33+1         55
-    ELSE                                                                      1              56
-      FROMCONTRACTSTACK DUP TOCONTRACTSTACK Target GREATERTHANOREQUAL VERIFY  3+1+8+1+1      70
-      IF                                                                      1              71
+      FROMCONTRACTSTACK DUP TOCONTRACTSTACK Target LESSTHAN VERIFY            3+8+1+1        21
+      BackerPubkey CHECKSIG                                                   1+33+1         56
+    ELSE                                                                      1              57
+      FROMCONTRACTSTACK DUP TOCONTRACTSTACK Target GREATERTHANOREQUAL VERIFY  3+1+8+1+1      71
+      IF                                                                      1              72
         // continue                                                                        
-        Month2ScriptHash OUTPUTSCRIPTAMOUNT                                   1+20+1         93
-        4 MUL amount MUL 3 GREATERTHANOREQUAL VERIFY                          1+1+8+4        107
-        CompanyPubkey CHECKSIG                                                1+33+1         142
-      ELSE                                                                    1              143
+        Month2ScriptHash OUTPUTSCRIPTAMOUNT                                   1+20+1         94
+        4 MUL amount MUL 3 GREATERTHANOREQUAL VERIFY                          1+1+8+4        108
+        CompanyPubkey CHECKSIG                                                1+33+1         143
+      ELSE                                                                    1              144
         // bankrupcy                                                          0             
-        Bankruptcy1ScriptHash OUTPUTSCRIPTAMOUNT                              1+1+1+23+1     170
-        amount EQUALVERIFY                                                    1+1+1+8+1      182
-        backerPubkey CHECKSIG                                                 1+33+1         217
-      ENDIF                                                                   1              218
-    ENDIF                                                                     1              219
+        Bankruptcy1ScriptHash OUTPUTSCRIPTAMOUNT                              1+1+1+23+1     171
+        amount EQUALVERIFY                                                    1+1+1+8+1      183
+        backerPubkey CHECKSIG                                                 1+33+1         218
+      ENDIF                                                                   1              219
+    ENDIF                                                                     1              220
     -----------------------------------------------------------------------------------------------
     
     contract "Bankruptcy 1" {
@@ -141,7 +155,7 @@ Note that in case of failure to vote for bankrupcy, funds can proceed towards th
         0 // add initial value zero to Contract Stack
       }
       enter {
-        OUTPUTAMOUNT ADD // add output amount to the contract total balance
+        CURRENTAMOUNT ADD // add output amount to the contract total balance
       }
       func contractAmountRaised {
         FROMCONTRACTSTACK DUP TOCONTRACTSTACK // get the value from contract stack and put back a copy
@@ -258,6 +272,10 @@ OP_OUTPUTSCRIPT        | 0xc3        | (index → script) Pops index of an outpu
 OP_OUTPUTAMOUNT        | 0xc4        | (index → amount) Pops index of an output from the stack and pushes corresponding output amount to the stack. Available only in transition script.
 OP_OUTPUTSCRIPTAMOUNT  | 0xc5        | (hash160 → amount) Pops Hash160 of an output script and pushes sum of amounts on all outputs with scripts matching the hash. If no output found, pushes 0. Available only in transition script.
 
+This is a preliminary list. Some opcodes may change, added or removed.
+
+We could enable existing opcodes like MUL, DIV, CAT, SUBSTR etc and attach new cost-evaluating rules. The script opcodes can be scanned without execution to estimate their cost. Cost then can be capped and/or used to compute a mining fee.
+
 **Expansion Opcodes:**
 
 Name                   | Value       |  Description
@@ -273,12 +291,19 @@ OP_RESERVED4           | 0xcd        | Disabled opcode. If executed, transaction
 OP_RESERVED5           | 0xce        | Disabled opcode. If executed, transaction is invalid. Used for future expansion.
 OP_RESERVED6           | 0xcf        | Disabled opcode. If executed, transaction is invalid. Used for future expansion.
 
+
+Cost
+----
+
+Note that like original scripting language, P2C scripts are not turing-complete and therefore CPU cost is roughly proportional to the length of the contract. This means that a very simple check of the length of the script or a quick enumeration of all opcodes would give a very accurate estimate of the CPU cost to execute the contract before spending any time on evaluating complex operations.
+
 Notes
 -----
 
+* Current limit on pushdata is 520 bytes. Total script size limit is 10000 bytes. To allow larger pushdatas, we may allow breaking down transition script in pieces with multiple hash checks in the output script. To allow longer scripts, we may break down scripts into multiple transactions. E.g. the top script implements a routing table that allows jumping to several other scripts, doing actual verification.
 * Note that this architecture allows "selling contracts". The contract can ensure that it is transferred into itself or compatible contract.
-* What happens when you add up some balance later? 
 * Inaccuracy of fractions can be mitigated by rational numbers (e.g. instead of `a > 0.75*b` we could do `4*a >= 3*b` or `a DUP ADD DUP ADD b DUP DUP >=`)
+* What happens when you add up some coins later?
 * What if someone unrelated to original funding process deposits enough funds to enable bankcruptcy? Those who wish to continue funding may do so, others can exit.
 * Note that we refer amounts to a constant Target instead of an actual currently locked amount (imagine the target is 1000, but actually 4000 were provided). Additional funds can be deposited to a contract any time. The difficulty is to synchronize on which amount is considered latest, so each individual transaction refers to the same amount. One possibility is to provide a barrier up-front ("we count only funds raised before date X"). This slightly complicates calculation and storage of the deposits and does not solve a problem of influx of extra funds to affect voting process.
 * Alternative way to do multi-party computation is serial: Bob "spends" Alice's contract under condition of preserving funds and contract (but can add more).
