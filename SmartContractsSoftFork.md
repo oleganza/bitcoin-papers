@@ -303,6 +303,7 @@ Notes
 -----
 
 * Current limit on pushdata is 520 bytes. Total script size limit is 10000 bytes. To allow larger pushdatas, we may allow breaking down transition script in pieces with multiple hash checks in the output script. To allow longer scripts, we may break down scripts into multiple transactions. E.g. the top script implements a routing table that allows jumping to several other scripts, doing actual verification.
+* Alternatively, implement [Gregory Maxwell's idea](https://en.bitcoin.it/wiki/User:Gmaxwell/alt_ideas): "Represent the script as a merklized abstract syntax tree. The P2SH address is the root. When spending the spender only may provide only the branch they are executing, and hashes for the unexecuted branches. This increases privacy and can compress long scripts on spend."
 * Note that this architecture allows "selling contracts". The contract can ensure that it is transferred into itself or compatible contract.
 * Inaccuracy of fractions can be mitigated by rational numbers (e.g. instead of `a > 0.75*b` we could do `4*a >= 3*b` or `a DUP ADD DUP ADD b DUP DUP >=`)
 * What happens when you add up some coins later?
