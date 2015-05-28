@@ -1,9 +1,11 @@
 Pay-to-contract extension to Bitcoin transactions (DRAFT)
 =========================================================
 
+```
 Author: Oleg Andreev <oleganza@gmail.com>
 Date: May 27, 2015
 Status: Draft
+```
 
 Introduction
 ------------
