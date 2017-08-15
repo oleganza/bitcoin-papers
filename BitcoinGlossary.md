@@ -135,7 +135,7 @@ Utility based on bitcoinjs to craft transactions by hand, convert *private keys*
 
 ### WarpWallet
 
-Warpwallets are similar to weak brainwallets with two key differences: 1) they must be solted with a public string such as user's email address 2) the derivation scheme must be way harder than "1 round of sha256" making warpwallet as secure as BIP39 although much more convenient and user friendly. The concept was proposed by Keybase at keybase.io/warp but implementations may vary.
+Warpwallets are similar to weak brainwallets with two key differences: 1) they must be salted with a public string such as user's email address 2) the derivation scheme must be way harder than "1 round of sha256" making warpwallet as secure as BIP39 although much more convenient and user friendly. The concept was proposed by Keybase at keybase.io/warp but implementations may vary.
 
 ### BTC
 
