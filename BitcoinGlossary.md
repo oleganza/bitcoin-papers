@@ -74,7 +74,7 @@ A Java implementation of a full Bitcoin node by Mike Hearn. Also includes *SPV* 
 
 ### Bitcoinjs
 
-A JavaScript Bitcoin library. Allows singing transactions and performing several elliptic curve operations. Used on *brainwallet.org*. See also *Bitcore*, another JS library.
+A JavaScript Bitcoin library. Allows signing transactions and performing several elliptic curve operations. Used on *brainwallet.org*. See also *Bitcore*, another JS library.
 
 
 ### BitcoinQT
