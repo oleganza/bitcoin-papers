@@ -74,7 +74,7 @@ A Java implementation of a full Bitcoin node by Mike Hearn. Also includes *SPV* 
 
 ### Bitcoinjs
 
-A JavaScript Bitcoin library. Allows singing transactions and performing several elliptic curve operations. Used on *brainwallet.org*. See also *Bitcore*, another JS library.
+A JavaScript Bitcoin library. Allows signing transactions and performing several elliptic curve operations. Used on *brainwallet.org*. See also *Bitcore*, another JS library.
 
 
 ### BitcoinQT
@@ -101,7 +101,7 @@ A Bitcoin toolkit by Bitpay written in JavaScript. More complete than *Bitcoinjs
 
 ### Block
 
-A data structure that consists of a *block header* and a *merkle tree* of transactions. Each block (except for *genesis block*) references one previous block thus forming a tree called the *blockchain*. Block can be though of as a group of transactions with a timestamp and a *proof-of-work* attached.
+A data structure that consists of a *block header* and a *merkle tree* of transactions. Each block (except for *genesis block*) references one previous block thus forming a tree called the *blockchain*. Block can be thought of as a group of transactions with a timestamp and a *proof-of-work* attached.
 
 
 ### Block Header
@@ -185,7 +185,7 @@ US-based Bitcoin/USD exchange and web wallet service.
 
 ### Colored Coin
 
-A concept of adding a special meaning to certain transaction outputs. This could be used to create a tradable commodity on top of Bitcoin protocol. For instance, a company may create 1 million shares and declare a single transaction output containing 10 BTC (1 bln *satoshis*) as a source of these shares. Then, some or all of these bitcoins can be moved to other addresses, sold or exchanged for anything. During a voting process or a dividend distribution, share owners can prove ownership by simply singing a particular message by the private keys associated with addresses holding bitcoins derived from the initial source.
+A concept of adding a special meaning to certain transaction outputs. This could be used to create a tradable commodity on top of Bitcoin protocol. For instance, a company may create 1 million shares and declare a single transaction output containing 10 BTC (1 bln *satoshis*) as a source of these shares. Then, some or all of these bitcoins can be moved to other addresses, sold or exchanged for anything. During a voting process or a dividend distribution, share owners can prove ownership by simply signing a particular message by the private keys associated with addresses holding bitcoins derived from the initial source.
 
 
 ### Cold Storage
