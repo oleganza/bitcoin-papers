@@ -515,7 +515,7 @@ A 32-bit unsigned integer in a transaction input used to replace older version o
 
 ### Signature
 
-A sequence of bytes that proves that a piece of data is acknowledged by a person holding a certain *public key*. Bitcoin uses *ECDSA* for signing transactions. Amounts of bitcoins are sent through a chain of transactions: from one to another. Every transaction must provide a signature matching a public key defined in the previous transaction. This way only a proper owner a secret *private key* associated with a given public key can spend bitcoins further.
+A sequence of bytes that proves that a piece of data is acknowledged by a person holding a certain *public key*. Bitcoin uses *ECDSA* for signing transactions. Amounts of bitcoins are sent through a chain of transactions: from one to another. Every transaction must provide a signature matching a public key defined in the previous transaction. This way only a proper owner of a secret *private key* associated with a given public key can spend bitcoins further.
 
 
 ### Simplified Payment Verification (SPV)
