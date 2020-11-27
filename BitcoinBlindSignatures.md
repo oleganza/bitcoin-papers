@@ -10,11 +10,11 @@ Protect personal wallet by outsourcing signing to multiple trusted parties, whil
 
 Most blind signature protocols focus on making signatures unidentifiable for a given public key, but do not protect public key itself. This is a problem for cryptocurrency transactions where public key is either unique (one-time keys in Bitcoin) or identifies user's account (Ethereum, Stellar).
 
-The following protocol uses a trusted party as a personal bank, while keeping them unaware about the published transaction, where both the signature and the public key are not linked to the signer's data.
+The following protocol uses each party as a "trusted custodian", while keeping them unaware about the published transaction, where both the signature and the public key are not linked to the signer's data. The only job of a custodian is to correctly authenticate the user and deny signatures to imposters.
 
 ## Compatibility
 
-The scheme produces signatures compatible with Ed25519 (used in Ethereum, Stellar and many other protocols) and BIP340 (proposal for Bitcoin).
+The scheme produces signatures compatible with Ed25519 (used in Stellar and some other protocols) and BIP340 (Schnorr signatures proposal for Bitcoin).
 
 ## Definitions
 
