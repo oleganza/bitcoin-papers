@@ -30,7 +30,7 @@ Agent generates a key pair `x, X = x·G` and sends `X` to Principle. `G` is a co
 
 Principle chooses a blinding factor `b` as a uniformly random scalar.
 
-Principle computes the public verification key `X' = X + b` and uses it for locking funds on a blockchain.
+Principle computes the public verification key `X' = X + b·G` and uses it for locking funds on a blockchain.
 
 ## Protocol 2: signing
 
