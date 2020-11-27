@@ -8,7 +8,7 @@ Author: Oleg Andreev <oleganza@gmail.com>
 
 Protect personal wallet by outsourcing signing to multiple trusted parties, while hiding the public key, signature and the message from them.
 
-Most blind signature protocols focus on making signatures unidentifiable for a given public key, but do not protect public key itself. This is a problem for cryptocurrency transactions where public key is either unique (one-time keys in Bitcoin) or identifies user's account (Ethereum, Stellar).
+Most blind signature protocols focus on making signatures unidentifiable for a given public key, but do not protect public key itself. This is a problem for cryptocurrency transactions where the public key is either unique (one-time keys in Bitcoin) or identifies user's account (Ethereum, Stellar).
 
 The following protocol uses each party as a "trusted custodian", while keeping them unaware about the published transaction, where both the signature and the public key are not linked to the signer's data. The only job of a custodian is to correctly authenticate the user and deny signatures to imposters.
 
@@ -28,9 +28,9 @@ Together, **principle** and **agent** perform the role of a **signer** in the Sc
 
 Agent generates a key pair `x, X = x·G` and sends `X` to Principle. `G` is a common base point.
 
-Principle chooses random blinding factors `a` and `b` as uniformly random scalars.
+Principle chooses a blinding factor `b` as a uniformly random scalar.
 
-Principle computes the public verification key `X' = a·X + b` and uses it for locking funds on a blockchain.
+Principle computes the public verification key `X' = X + b` and uses it for locking funds on a blockchain.
 
 ## Protocol 2: signing
 
@@ -42,7 +42,7 @@ Principle chooses two random blinding factors `p` and `q` and generates the blin
 
 Principle sends blinded nonce commitment to the Verifier who responds with the challenge `c'` (in a non-interactive scheme, it is a hash of the protocol transcript).
 
-Principle reverse-blinds challenge `c'` with previously generated blinding factors `a, p` to produce Agent's challenge `c = a·p^-1·c'`.
+Principle reverse-blinds challenge `c'` with previously generated blinding factor `p` to produce Agent's challenge `c = p^-1·c'`.
 
 Principle sends reverse-blinded challenge `c` to Agent.
 
@@ -56,13 +56,40 @@ Now the signature `(s',R')` is a valid Schnorr signature for challenge `c'` and 
 s' = p·s + q + c'·b
    = p·(r + c·x) + q + c'·b
    = p·r + q + p·c·x + c'·b
+   = p·r + q + p·p^-1·c'·x + c'·b
+   = p·r + q + c'·x + c'·b
+   = p·r + q + c'·(x + b)
+   = r' + c'·x'
+```
+
+## Practical considerations
+
+The blinding factor `b` can be generated through a scheme similar to BIP32. The agent generates a single public key `X`, while the principle generates unique `b` for each "address" they need to send funds to.
+
+Blinding factors `p` and `q` could be generated through the similar procedure as agent's nonce `r`: a mix of deterministic (based on transcript and blinding factor `b`) and auxiliary randomness.
+
+
+## Compatibility with MuSig and threshold signing
+
+TBD: present how MuSig must be adjusted to permit reconstruction of the blinded multikey, where the Principle acts like a Dealer, coordinating the protocol between multiple Agents.
+
+
+## What blinding factors do we need?
+
+Suppose we blind `X` with two factors `a, b`. Which factors could we omit, and would it be safe to do so?
+
+```
+x' = a·x + b
+c' = a^-1·p·c
+R' = p·R + q·G
+s' = p·s + q + c'·b
+   = p·(r + c·x) + q + c'·b
+   = p·r + q + p·c·x + c'·b
    = p·r + q + p·a·p^-1·c'·x + c'·b
    = p·r + q + a·c'·x + c'·b
    = p·r + q + c'·(a·x + b)
    = r' + c'·x'
 ```
-
-## What blinding factors do we need?
 
 #### b = 0
 
@@ -78,7 +105,7 @@ s' = p·s + q
    = r' + c'·x'
 ```
 
-Seems to be ok.
+Seems to be ok, but not compatible with BIP32 derivation.
 
 
 #### b = 0 & q = 0
