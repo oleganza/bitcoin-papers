@@ -62,3 +62,82 @@ s' = p·s + q + c'·b
    = r' + c'·x'
 ```
 
+## What blinding factors do we need?
+
+#### b = 0
+
+```
+x' = a·x
+c = a·p^-1·c'
+s' = p·s + q
+   = p·(r + c·x) + q
+   = p·r + q + p·c·x
+   = p·r + q + p·a·p^-1·c'·x
+   = p·r + q + a·c'·x
+   = p·r + q + c'·(a·x)
+   = r' + c'·x'
+```
+
+Seems to be ok.
+
+
+#### b = 0 & q = 0
+
+```
+x' = a·x
+c = a·p^-1·c'
+s' = p·s
+   = p·(r + c·x)
+   = p·r + p·c·x
+   = p·r + p·a·p^-1·c'·x
+   = p·r + a·c'·x
+   = p·r + c'·(a·x)
+   = r' + c'·x'
+```
+
+Insecure: can learn `a/p = c/c'`, then mult it by `s'` and get `a·s`, where `a = (c/c')*s'/s`.
+If `a` matches, tx is deanonymized.
+
+
+#### b = 0 & p = 1
+
+```
+x' = a·x
+c = a·c'
+s' = s + q
+   = (r + c·x) + q
+   = r + q + c·x
+   = r + q + a·c'·x
+   = r + q + c'·(a·x)
+   = r' + c'·x'
+```
+
+Insecure: can compute `a` out of `c/c'` and match against X'.
+
+
+#### a = 1
+
+```
+x' = x + b
+c  = p^-1·c'
+R' = p·R + q·G
+s' = p·s + q + c'·b
+   = p·(r + c·x) + q + c'·b
+   = p·r + q + p·c·x + c'·b
+   = p·r + q + p·p^-1·c'·x + c'·b
+   = p·r + q + c'·x + c'·b
+   = p·r + q + c'·(x + b)
+   = r' + c'·x'
+```
+
+Can compute candidate `p` as `c'/c`, but `R'` is still protected by `q·G`, where `q` is protected by ECDLP.
+
+Seems to be ok. Nice thing is - additive blinding is compatible with BIP32.
+
+#### a = 1 & p = 1
+
+In this case `c == c'` which identifies the transaction.
+
+#### a = 1 & q = 0
+
+Tx is identified by matching `(c'/c)R` with `R'`.
