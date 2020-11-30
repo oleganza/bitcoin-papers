@@ -18,37 +18,37 @@ The scheme produces signatures compatible with Ed25519 (used in Stellar and some
 
 ## Definitions
 
-**Principle** is the user holding funds who outsources control to multiple **agents** (with m-of-n multisig).
+**Principal** is the user holding funds who outsources control to multiple **agents** (with m-of-n multisig).
 
-**Agent** is a user providing signing service to the **principle**.
+**Agent** is a user providing signing service to the **principal**.
 
-Together, **principle** and **agent** perform the role of a **signer** in the Schnorr signature protocol
+Together, **principal** and **agent** perform the role of a **signer** in the Schnorr signature protocol
 
 ## Protocol 1: key generation
 
-Agent generates a key pair `x, X = x·G` and sends `X` to Principle. `G` is a common base point.
+Agent generates a key pair `x, X = x·G` and sends `X` to Principal. `G` is a common base point.
 
-Principle chooses a blinding factor `b` as a uniformly random scalar.
+Principal chooses a blinding factor `b` as a uniformly random scalar.
 
-Principle computes the public verification key `X' = X + b·G` and uses it for locking funds on a blockchain.
+Principal computes the public verification key `X' = X + b·G` and uses it for locking funds on a blockchain.
 
 ## Protocol 2: signing
 
-Principle authenticates itself to its Agent to initiate a signature protocol.
+Principal authenticates itself to its Agent to initiate a signature protocol.
 
-Agent chooses a random nonce scalar `r` and sends commitment `R = r·G` to the principle.
+Agent chooses a random nonce scalar `r` and sends commitment `R = r·G` to the principal.
 
-Principle chooses two random blinding factors `p` and `q` and generates the blinded nonce commitment `R' = p·R + q`.
+Principal chooses two random blinding factors `p` and `q` and generates the blinded nonce commitment `R' = p·R + q`.
 
-Principle sends blinded nonce commitment to the Verifier who responds with the challenge `c'` (in a non-interactive scheme, it is a hash of the protocol transcript).
+Principal sends blinded nonce commitment to the Verifier who responds with the challenge `c'` (in a non-interactive scheme, it is a hash of the protocol transcript).
 
-Principle reverse-blinds challenge `c'` with previously generated blinding factor `p` to produce Agent's challenge `c = p^-1·c'`.
+Principal reverse-blinds challenge `c'` with previously generated blinding factor `p` to produce Agent's challenge `c = p^-1·c'`.
 
-Principle sends reverse-blinded challenge `c` to Agent.
+Principal sends reverse-blinded challenge `c` to Agent.
 
-Agent computes the Schnorr signature `s = r + c·x` and returns `s` to Principle.
+Agent computes the Schnorr signature `s = r + c·x` and returns `s` to Principal.
 
-Principle blinds `s` as follows: `s' = p·s + q + c'·b`. 
+Principal blinds `s` as follows: `s' = p·s + q + c'·b`. 
 
 Now the signature `(s',R')` is a valid Schnorr signature for challenge `c'` and verification key `X'`:
 
@@ -64,14 +64,14 @@ s' = p·s + q + c'·b
 
 ## Practical considerations
 
-The blinding factor `b` can be generated through a scheme similar to BIP32. The agent generates a single public key `X`, while the principle generates unique `b` for each "address" they need to send funds to.
+The blinding factor `b` can be generated through a scheme similar to BIP32. The agent generates a single public key `X`, while the principal generates unique `b` for each "address" they need to send funds to.
 
 Blinding factors `p` and `q` could be generated through the similar procedure as agent's nonce `r`: a mix of deterministic (based on transcript and blinding factor `b`) and auxiliary randomness.
 
 
 ## Compatibility with MuSig and threshold signing
 
-TBD: present how MuSig must be adjusted to permit reconstruction of the blinded multikey, where the Principle acts like a Dealer, coordinating the protocol between multiple Agents.
+TBD: present how MuSig must be adjusted to permit reconstruction of the blinded multikey, where the Principal acts like a Dealer, coordinating the protocol between multiple Agents.
 
 
 ## What blinding factors do we need?
